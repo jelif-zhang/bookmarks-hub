@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmarks Hub</title>
+    <link rel="stylesheet" type="text/css" href="media/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="media/jquery.dataTables.min.css">
+    <script type="text/javascript" src="media/jquery.js"></script>
+    <script type="text/javascript" src="media/jquery.dataTables.min.js"></script>
+    <script>
+        function render(data, type, row, meta) {
+            return `<a href="${row["url"]}" target="_blank">${data}</a>`
+        }
+        defaultOption = {
+            ajax: {
+                dataSrc: ""
+            },
+            searching: false,
+            paging: false,
+            ordering: false,
+            columns: [
+                {
+                    data: "title",
+                    render: render
+                }
+            ]
+        }
+        $(document).ready(function() {
+            urls = [
+                "http://localhost:8080",
+                "http://localhost:8080",
+                "http://localhost:8080"
+            ]
+            tables = []
+            urls.forEach((url, i) => {
+                option = $.extend(true, {}, defaultOption, {ajax:{url: url}})
+                tables.push($(`#table${i+1}`).DataTable(option))
+            })
+            $("#table2").removeAttr("style")
+            $("#keyword").keypress(e => {
+                if (e.key == "Enter") {
+                    $("#search").click()
+                }
+            })
+            $("#search").on("click", function() {
+                keyword = $("#keyword").val()
+                for (i in urls) {
+                    tables[i].ajax.url(`${urls[i]}?kw=${keyword}`).load()
+                }
+            })
+            document.onkeydown = function(e) {
+                if(e.ctrlKey && e.key === 'f'){
+                    $("#keyword").focus()
+                    $("#keyword").select()
+                    return false
+                }
+            }
+        })
+    </script>
+    <style type="text/css">
+        table.dataTable thead th, table.dataTable.no-footer {
+            border-bottom-color: rgb(221, 221, 221)
+        }
+        .dataTables_wrapper .dataTables_info {
+            display: none
+        }
+        .form-control:focus, .btn-primary:focus {
+            box-shadow: none
+        }
+        table {
+            table-layout: fixed;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center" style="margin-top: 40px">
+        Bookmarks Hub
+    </h1>
+    <div class="row container-fluid" style="margin-top: 40px margin-bottom: 40px">
+        <div class="col-md-3"></div>
+        <div class="input-group col-6">
+          <input type="text" class="form-control" placeholder="关键词" id="keyword">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" id="search">🔍</button>
+          </div>
+        </div>
+        <div class="col-3"></div>
+    </div>
+    <div class="row container-fluid">
+        <div class="col-4">
+            <table id="table1" class="display">
+            </table>
+        </div>
+        <div class="col-4">
+            <table id="table2" class="display">
+            </table>
+        </div>
+        <div class="col-4">
+            <table id="table3" class="display">
+            </table>
+        </div>
+    </div>
+</body>
+</html>

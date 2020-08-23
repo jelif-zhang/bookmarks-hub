@@ -2,6 +2,8 @@
 
 一个汇聚浏览器书签的前端工具
 
+![](https://github.com/jelif-zhang/bookmarks-hub/blob/master/media/screenshot.png)
+
 ## 功能
 
 1. 聚合展示来自多个浏览器的书签信息
@@ -18,4 +20,10 @@
 
 ## 注意事项
 
-数据源和搜索功能由后端提供，一个例子见 [safari-bookmarks-parser](https://github.com/jelif-zhang/safari-bookmarks-parser)
+数据源和搜索功能由后端提供，此工具需要搭配后端工具使用：
+
+1. 解析Safari书签的工具： [safari-bookmarks-parser](https://github.com/jelif-zhang/safari-bookmarks-parser)
+1. 解析FireFox书签的工具：[firefox-bookmarks-parser](https://github.com/jelif-zhang/firefox-bookmarks-parser)
+
+> 对于其他浏览器，需自行实现解析工具，数据格式参看[safari-bookmarks-parser](https://github.com/jelif-zhang/safari-bookmarks-parser)项目的README
+
